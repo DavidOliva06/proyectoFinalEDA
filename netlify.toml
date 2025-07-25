@@ -1,0 +1,13 @@
+# --- Configuración de Build para Netlify ---
+# Esta sección le dice a Netlify cómo construir tu sitio.
+
+[build]
+  # Base directory: La carpeta donde vive el código de tu frontend.
+  base = "simulador_frontend"
+
+  # Build command: El comando para compilar tu proyecto de Angular.
+  command = "ng build"
+
+  # Publish directory: La carpeta que Netlify debe publicar,
+  # relativa a la carpeta 'base'.
+  publish = "dist/simulador_frontend"
