@@ -70,8 +70,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'simulador_backend.urls'
 CORS_ALLOWED_ORIGINS = [
-    'https://simuladorarbolesdo.netlify.app', # La URL que Netlify te dio
-    'http://localhost:4200',        # Para seguir desarrollando en local
+    'https://simuladorarbolesdo.netlify.app', 
 ]
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
