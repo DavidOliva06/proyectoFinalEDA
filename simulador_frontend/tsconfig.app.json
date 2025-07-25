@@ -7,8 +7,9 @@
     "types": []
   },
   "include": [
-    "src/**/*.ts"
-, "src/app/dashboard/dashboard/dashboard.component.ts"  ],
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/app/dashboard/dashboard/dashboard.component.ts"  ],
   "exclude": [
     "src/**/*.spec.ts"
   ]

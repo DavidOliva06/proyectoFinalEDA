@@ -5,11 +5,39 @@
   min-height: 600px;
   background-color: #f8f9fa;
   border: 1px solid #dee2e6;
-  border-radius: 8px;
-  // Estilos para el placeholder de texto
-  pre {
-    padding: 1rem;
-    white-space: pre-wrap;
-    word-break: break-all;
+  border-radius: $base-border-radius;
+  overflow: hidden; // Evita que el SVG se desborde si es muy grande
+
+  // Estilos para los elementos que n3.js crea (nodos y enlaces)
+  // Usamos ::ng-deep para que los estilos apliquen dentro del SVG generado.
+  ::ng-deep {
+    .node circle {
+      fill: $primary-color;
+      stroke: $primary-hover;
+      stroke-width: 2px;
+    }
+    
+    .node text {
+      font-size: 14px;
+      font-weight: 600;
+      fill: white;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    }
+    
+    .link {
+      fill: none;
+      stroke: #ccc;
+      stroke-width: 2px;
+    }
+  }
+
+  // Estilos para el mensaje de árbol vacío
+  .empty-tree-msg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: $text-light;
+    font-style: italic;
   }
 }
