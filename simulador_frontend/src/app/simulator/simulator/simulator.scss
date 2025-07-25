@@ -1,0 +1,58 @@
+@import 'variables';
+
+.simulator-page {
+  padding: 2rem;
+}
+
+.simulator-container {
+  display: grid;
+  grid-template-columns: 350px 1fr; // Columna fija para controles, el resto para visualización
+  gap: 2rem;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.controls-section {
+  background-color: $card-background;
+  border-radius: $base-border-radius;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  align-self: start; // Evita que se estire verticalmente
+}
+
+.visualization-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.feedback-panel {
+  min-height: 40px;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+.loading-indicator {
+  color: $primary-color;
+}
+
+.message-display {
+  color: $text-medium;
+}
+
+.placeholder-visualization {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  border: 2px dashed $border-color;
+  border-radius: $base-border-radius;
+  background-color: #fcfcfc;
+  min-height: 500px;
+}
+
+.placeholder-content {
+  text-align: center;
+  color: $text-light;
+  h2 { color: $text-dark; }
+}

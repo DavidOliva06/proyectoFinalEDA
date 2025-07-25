@@ -1,0 +1,35 @@
+<div class="simulator-page">
+  <div class="simulator-container">
+    <div class="controls-section">
+      <!-- Pasamos el estado 'isSessionActive' al componente hijo.
+           Esto le permite saber si debe mostrar la vista de creación o de operación. -->
+      <app-controls
+        [isSessionActive]="!!activeTree()"
+        (createTree)="handleCreateTree($event)"
+        (operation)="handleOperation($event)">
+      </app-controls>
+    </div>
+
+    <div class="visualization-section">
+      <div class="feedback-panel">
+        <div *ngIf="isLoading()" class="loading-indicator">Cargando...</div>
+        <div *ngIf="message() && !isLoading()" class="message-display">{{ message() }}</div>
+      </div>
+      
+      <!-- Si hay un árbol activo, renderizamos el componente de visualización -->
+      <ng-container *ngIf="activeTree(); else noTreeTemplate">
+        <app-visualization [tree]="activeTree()"></app-visualization>
+      </ng-container>
+
+      <!-- Si no, mostramos un placeholder amigable -->
+      <ng-template #noTreeTemplate>
+        <div class="placeholder-visualization">
+          <div class="placeholder-content">
+            <h2>Bienvenido al Simulador</h2>
+            <p>Para empezar, crea un nuevo árbol en el panel de la izquierda.</p>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

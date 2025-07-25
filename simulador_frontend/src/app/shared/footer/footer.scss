@@ -1,0 +1,28 @@
+@import 'variables';
+
+.main-footer {
+  background-color: $text-dark;
+  color: #a9a9a9;
+  padding: 1.5rem 2rem;
+  text-align: center;
+  margin-top: auto; /* Empuja el footer hacia abajo */
+}
+
+.footer-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-links a {
+  color: #a9a9a9;
+  text-decoration: none;
+  margin-left: 1rem;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: white;
+  }
+}

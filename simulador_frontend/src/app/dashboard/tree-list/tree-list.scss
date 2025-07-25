@@ -1,0 +1,91 @@
+@import 'variables';
+
+.tree-list-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.tree-card {
+  display: flex;
+  flex-direction: column;
+  background-color: $card-background;
+  border: 1px solid $border-color;
+  border-radius: $base-border-radius;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+}
+
+.card-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid $border-color;
+}
+
+.tree-type-badge {
+  display: inline-block;
+  background-color: $primary-color;
+  color: white;
+  padding: 0.25rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.tree-name {
+  margin: 0;
+  font-size: 1.25rem;
+  color: $text-dark;
+  // Para nombres largos
+  word-wrap: break-word;
+}
+
+.card-body {
+  padding: 1.5rem;
+  flex-grow: 1; // Hace que esta sección crezca para empujar el footer hacia abajo
+}
+
+.last-updated {
+  font-size: 0.9rem;
+  color: $text-light;
+  margin: 0;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  background-color: #f9fafb;
+  border-top: 1px solid $border-color;
+  border-bottom-left-radius: $base-border-radius;
+  border-bottom-right-radius: $base-border-radius;
+}
+
+.action-button {
+  padding: 0.5rem 1rem;
+  border-radius: $input-border-radius;
+  border: 1px solid transparent;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &.load-button {
+    background-color: $primary-color;
+    color: white;
+    &:hover { background-color: $primary-hover; }
+  }
+  
+  &.delete-button {
+    background: none;
+    color: $error-color;
+    &:hover { 
+      background-color: $error-background;
+      border-color: $error-color;
+    }
+  }
+}

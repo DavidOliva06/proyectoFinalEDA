@@ -1,0 +1,43 @@
+<header class="main-header">
+  <nav class="header-nav">
+    <!-- Sección Izquierda: Logo y Enlaces Principales -->
+    <div class="nav-section left">
+      <a routerLink="/" class="logo">
+        <img src="assets/logo.svg" alt="Logo Simulador" class="logo-img"> <!-- Asegúrate de tener un logo en /assets -->
+        <span>TreeSim</span>
+      </a>
+      <ul class="nav-links">
+        <li>
+          <!-- routerLinkActive añade una clase CSS cuando la ruta está activa -->
+          <a routerLink="/simulator" routerLinkActive="active-link">Simulador</a>
+        </li>
+        <!-- Mostramos el enlace al Dashboard solo si el usuario está logueado -->
+        <li *ngIf="isLoggedIn()">
+          <a routerLink="/dashboard" routerLinkActive="active-link">Mis Árboles</a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Sección Derecha: Botones de Autenticación -->
+    <div class="nav-section right">
+      <ul class="nav-auth">
+        <!-- Si el usuario está logueado, muestra el botón de "Cerrar Sesión" -->
+        <ng-container *ngIf="isLoggedIn(); else loggedOutTemplate">
+          <li>
+            <button (click)="logout()" class="auth-button logout">Cerrar Sesión</button>
+          </li>
+        </ng-container>
+
+        <!-- Si no, muestra los botones de "Iniciar Sesión" y "Registrarse" -->
+        <ng-template #loggedOutTemplate>
+          <li>
+            <a routerLink="/auth/login" class="auth-button">Iniciar Sesión</a>
+          </li>
+          <li>
+            <a routerLink="/auth/register" class="auth-button register">Registrarse</a>
+          </li>
+        </ng-template>
+      </ul>
+    </div>
+  </nav>
+</header>

@@ -1,0 +1,41 @@
+@import 'variables';
+
+.control-group {
+  margin-bottom: 2rem;
+  h3 { color: $text-dark; margin-bottom: 0.5rem; }
+  p { font-size: 0.9rem; color: $text-light; margin-top: 0; }
+}
+
+.form-field {
+  margin-bottom: 1rem;
+  label { display: block; font-weight: 500; margin-bottom: 0.5rem; }
+  input, select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid $border-color;
+    border-radius: $input-border-radius;
+    box-sizing: border-box;
+    &:focus { outline: 1px solid $primary-color; }
+  }
+}
+
+.action-button {
+  width: 100%;
+  padding: 0.8rem;
+  background-color: $primary-color;
+  color: white;
+  border: none;
+  border-radius: $input-border-radius;
+  font-weight: 600;
+  cursor: pointer;
+  &:hover:not(:disabled) { background-color: $primary-hover; }
+  &:disabled { background-color: $primary-disabled; cursor: not-allowed; }
+}
+
+.button-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  // El botón de insertar ocupa las dos columnas
+  button:first-child { grid-column: 1 / -1; }
+}

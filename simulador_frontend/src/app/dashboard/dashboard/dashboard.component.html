@@ -1,0 +1,34 @@
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1>Mis Árboles Guardados</h1>
+    <p>Aquí puedes ver, cargar o eliminar los árboles que has guardado.</p>
+  </div>
+
+  <!-- Estado de Carga -->
+  <div *ngIf="isLoading()" class="loading-indicator">
+    <p>Cargando tus árboles...</p>
+  </div>
+
+  <!-- Estado de Error -->
+  <div *ngIf="errorMessage()" class="error-message">
+    {{ errorMessage() }}
+  </div>
+
+  <!-- Contenido Principal -->
+  <div *ngIf="!isLoading() && !errorMessage()">
+    <!-- Si no hay árboles, muestra un mensaje amigable -->
+    <div *ngIf="savedTrees().length === 0" class="no-trees-message">
+      <h2>¡Aún no has guardado ningún árbol!</h2>
+      <p>Ve al <a routerLink="/simulator">Simulador</a> para crear y guardar tu primera estructura.</p>
+    </div>
+
+    <!-- Si hay árboles, renderiza el componente de lista -->
+    <!-- [trees] es el @Input, (deleteTree) y (loadTree) son los @Output -->
+    <app-tree-list
+      *ngIf="savedTrees().length > 0"
+      [trees]="savedTrees()"
+      (deleteTree)="handleDeleteTree($event)"
+      (loadTree)="handleLoadTree($event)">
+    </app-tree-list>
+  </div>
+</div>

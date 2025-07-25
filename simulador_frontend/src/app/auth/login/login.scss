@@ -1,0 +1,137 @@
+// 1. Importa tus variables globales al inicio del archivo.
+// El ~ le dice al compilador de Sass que busque desde la carpeta `src`.
+@import 'variables';
+
+// --- Contenedor Principal ---
+// Contiene la tarjeta de login y la centra en la pantalla.
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 80px); // Ajusta '80px' a la altura de tu header
+  padding: 2rem;
+  background-color: $background-color;
+}
+
+// --- Tarjeta de Autenticación ---
+// El cuadro blanco que contiene el formulario.
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+  padding: 2.5rem;
+  background-color: $card-background;
+  border-radius: $base-border-radius;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+
+  h2 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    color: $text-dark;
+    font-size: 2rem;
+  }
+
+  p {
+    margin-bottom: 2rem;
+    color: $text-light;
+  }
+}
+
+// --- Estilos del Formulario ---
+form {
+  // --- Grupos de Formulario (Label + Input) ---
+  .form-group {
+    margin-bottom: 1.5rem;
+    text-align: left;
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: $text-medium;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.85rem;
+      border: 1px solid $border-color;
+      border-radius: $input-border-radius;
+      box-sizing: border-box; // Asegura que el padding no afecte el ancho total
+      transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+
+      // Estilos cuando el input está enfocado
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+        box-shadow: 0 0 0 3px rgba($primary-color, 0.2);
+      }
+
+      // Clase que se añade dinámicamente para inputs inválidos
+      &.invalid {
+        border-color: $error-color;
+      }
+    }
+  }
+
+  // --- Textos de Error de Validación ---
+  // Para mensajes como "Este campo es requerido"
+  .error-text {
+    color: $error-color;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    height: 1em; // Reserva espacio para evitar saltos de layout
+  }
+
+  // --- Mensaje de Error del Servidor ---
+  // Para "Credenciales incorrectas", etc.
+  .error-message {
+    background-color: $error-background;
+    color: $error-text-color;
+    padding: 1rem;
+    border-radius: $input-border-radius;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+}
+
+// --- Botón Principal de Acción ---
+.auth-button {
+  width: 100%;
+  padding: 0.9rem;
+  border: none;
+  border-radius: $input-border-radius;
+  background-color: $primary-color;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+
+  // Anidación para el estado :hover
+  &:hover:not(:disabled) {
+    background-color: $primary-hover;
+  }
+
+  // Anidación para el estado :disabled
+  &:disabled {
+    background-color: $primary-disabled;
+    cursor: not-allowed;
+  }
+}
+
+// --- Enlace de Redirección ---
+// "¿No tienes una cuenta? Regístrate aquí"
+.auth-redirect {
+  margin-top: 2rem;
+  color: $text-light;
+
+  a {
+    color: $primary-color;
+    text-decoration: none;
+    font-weight: 600;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

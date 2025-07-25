@@ -1,0 +1,44 @@
+<!-- Vista para CREAR un nuevo árbol. Se muestra cuando no hay sesión activa. -->
+<div *ngIf="!isSessionActive(); else operationControls">
+  <div class="control-group">
+    <h3>1. Crea un Nuevo Árbol</h3>
+    <p>Dale un nombre y elige el tipo de estructura.</p>
+    
+    <div class="form-field">
+      <label for="tree-name">Nombre del Árbol</label>
+      <input id="tree-name" type="text" [(ngModel)]="newTreeName" placeholder="Ej: Mi primer AVL">
+    </div>
+
+    <div class="form-field">
+      <label for="tree-type">Tipo de Árbol</label>
+      <select id="tree-type" [(ngModel)]="newTreeType">
+        <option value="AVL">Árbol AVL</option>
+        <option value="Splay">Árbol Splay</option>
+        <option value="B">Árbol B</option>
+      </select>
+    </div>
+
+    <button class="action-button" (click)="onCreate()" [disabled]="!newTreeName">
+      Crear y Empezar
+    </button>
+  </div>
+</div>
+
+<!-- Vista para OPERAR sobre un árbol existente. -->
+<ng-template #operationControls>
+  <div class="control-group">
+    <h3>2. Realiza Operaciones</h3>
+    <p>Inserta, elimina o busca nodos en el árbol activo.</p>
+
+    <div class="form-field">
+      <label for="node-value">Valor del Nodo</label>
+      <input id="node-value" type="number" [(ngModel)]="nodeValue" placeholder="Ej: 42">
+    </div>
+
+    <div class="button-grid">
+      <button class="action-button" (click)="onPerformOperation('insert')" [disabled]="nodeValue === null">Insertar</button>
+      <button class="action-button" (click)="onPerformOperation('delete')" [disabled]="nodeValue === null">Eliminar</button>
+      <button class="action-button" (click)="onPerformOperation('search')" [disabled]="nodeValue === null">Buscar</button>
+    </div>
+  </div>
+</ng-template>
