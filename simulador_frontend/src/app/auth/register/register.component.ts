@@ -14,7 +14,7 @@ import { AuthService, RegistrationData } from '../../core/services/auth.service'
     RouterLink,
   ],
   templateUrl: './register.component.html',
-  styleUrls: ['../login/login.component.scss']
+  styleUrls: ['../login/login.scss']
 })
 export class RegisterComponent {
   private fb = inject(FormBuilder);
