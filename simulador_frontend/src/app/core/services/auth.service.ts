@@ -4,13 +4,14 @@ import { tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
-// Interfaz para la respuesta del token de Simple JWT
-export interface TokenResponse {
-  access: string;
-  refresh: string;
+// --- INTERFACES CORREGIDAS ---
+
+// Interfaz para la respuesta del endpoint /api/login/ de tu backend
+export interface AuthTokenResponse {
+  token: string;
 }
 
-// Interfaz para los datos de registro, coincide con tu UserRegistrationSerializer
+// Interfaz para los datos de registro (esta no cambia)
 export interface RegistrationData {
   username: string;
   email: string;
@@ -22,21 +23,21 @@ export interface RegistrationData {
 })
 export class AuthService {
   private http = inject(HttpClient);
-  
-  // URL de tu API en Vercel. ¡Confirmado!
   private apiUrl = environment.apiUrl;
 
   private readonly _isLoggedIn = signal<boolean>(!!localStorage.getItem('authToken'));
   public readonly isLoggedIn = this._isLoggedIn.asReadonly();
 
   /**
-   * Inicia sesión llamando al endpoint de token de Simple JWT.
+   * Envía las credenciales al endpoint de autenticación por Token de DRF.
+   * @param credentials Un objeto con `username` y `password`.
    */
-  login(credentials: any): Observable<TokenResponse> {
-    // Este endpoint es proporcionado por Simple JWT, no está en tu views.py, lo cual es normal.
-    return this.http.post<TokenResponse>(`${this.apiUrl}/token/`, credentials).pipe(
+  login(credentials: any): Observable<AuthTokenResponse> {
+    // CAMBIO 1: Apunta al endpoint correcto de tu urls.py
+    return this.http.post<AuthTokenResponse>(`${this.apiUrl}/login/`, credentials).pipe(
       tap(response => {
-        localStorage.setItem('authToken', response.access);
+        // CAMBIO 2: Guarda el valor del campo 'token' que devuelve tu backend
+        localStorage.setItem('authToken', response.token);
         this._isLoggedIn.set(true);
       })
     );
@@ -51,15 +52,16 @@ export class AuthService {
   }
 
   /**
-   * Registra un nuevo usuario llamando a tu UserRegistrationView.
+   * Registra un nuevo usuario.
+   * @param userData Un objeto con los datos del nuevo usuario.
    */
   register(userData: RegistrationData): Observable<any> {
-    // Este endpoint coincide con tu UserRegistrationView.
     return this.http.post(`${this.apiUrl}/register/`, userData);
   }
 
   /**
-   * Obtiene el token de autenticación para ser usado en otros servicios.
+   * Obtiene el token de autenticación guardado.
+   * @returns El token o null si no existe.
    */
   getAuthToken(): string | null {
     return localStorage.getItem('authToken');
