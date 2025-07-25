@@ -15,7 +15,7 @@ import { AuthService } from '../../core/services/auth.service';
     RouterLink,            // Para la directiva routerLink
   ],
   templateUrl: './login.component.component.html',
-  styleUrls: ['./login.css']
+  styleUrls: ['./login.scss']
 })
 export class LoginComponent {
   // Inyección de dependencias moderna
