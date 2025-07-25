@@ -1,8 +1,7 @@
 <div class="simulator-page">
   <div class="simulator-container">
     <div class="controls-section">
-      <!-- Pasamos el estado 'isSessionActive' al componente hijo.
-           Esto le permite saber si debe mostrar la vista de creación o de operación. -->
+      <!-- El componente de controles recibe el estado booleano de si hay una sesión activa -->
       <app-controls
         [isSessionActive]="!!activeTree()"
         (createTree)="handleCreateTree($event)"
@@ -12,21 +11,31 @@
 
     <div class="visualization-section">
       <div class="feedback-panel">
+        <!-- Mostramos un indicador de carga mientras se procesa una petición -->
         <div *ngIf="isLoading()" class="loading-indicator">Cargando...</div>
+        <!-- Mostramos mensajes de estado cuando no está cargando -->
         <div *ngIf="message() && !isLoading()" class="message-display">{{ message() }}</div>
       </div>
       
-      <!-- Si hay un árbol activo, renderizamos el componente de visualización -->
-      <ng-container *ngIf="activeTree(); else noTreeTemplate">
-        <app-visualization [tree]="activeTree()"></app-visualization>
-      </ng-container>
+      <!-- 
+        --- CORRECCIÓN PRINCIPAL AQUÍ ---
+        La directiva *ngIf ahora está en el propio componente app-visualization.
+        Esto garantiza que el componente solo se renderizará cuando 'activeTree()' NO sea null,
+        satisfaciendo así la condición del input que requiere un objeto 'Tree' y no 'null'.
+      -->
+      <app-visualization 
+        *ngIf="activeTree(); else noTreeTemplate" 
+        [tree]="activeTree()">
+      </app-visualization>
 
-      <!-- Si no, mostramos un placeholder amigable -->
+      <!-- 
+        El 'else' del *ngIf apunta a esta plantilla, que se muestra cuando 'activeTree()' es null.
+      -->
       <ng-template #noTreeTemplate>
         <div class="placeholder-visualization">
           <div class="placeholder-content">
             <h2>Bienvenido al Simulador</h2>
-            <p>Para empezar, crea un nuevo árbol en el panel de la izquierda.</p>
+            <p>Para empezar, crea un nuevo árbol en el panel de la izquierda o carga uno desde tu dashboard.</p>
           </div>
         </div>
       </ng-template>

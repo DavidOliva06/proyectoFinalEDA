@@ -17,13 +17,12 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "outputPath": "dist/simulador_frontend", 
-            "index": "src/index.html", 
+            "outputPath": "dist/simulador_frontend",
+            "index": "src/index.html",
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-
               {
                 "glob": "**/*",
                 "input": "public"
@@ -33,12 +32,17 @@
                 "input": "src/assets",
                 "output": "/assets/"
               },
-              "src/_redirects" 
+              "src/_redirects"
             ],
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": [] 
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src"
+              ]
+            },
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -88,8 +92,7 @@
               {
                 "glob": "**/*",
                 "input": "public"
-              },
-              "src/_redirects"
+              }
             ],
             "styles": [
               "src/styles.scss"

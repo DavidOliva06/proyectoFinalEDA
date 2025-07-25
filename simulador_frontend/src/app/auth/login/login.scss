@@ -1,6 +1,6 @@
 // 1. Importa tus variables globales al inicio del archivo.
 // El ~ le dice al compilador de Sass que busque desde la carpeta `src`.
-@import 'variables';
+@use 'variables' as *;
 
 // --- Contenedor Principal ---
 // Contiene la tarjeta de login y la centra en la pantalla.
