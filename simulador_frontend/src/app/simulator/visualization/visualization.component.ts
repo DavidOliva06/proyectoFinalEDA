@@ -2,20 +2,13 @@ import { Component, ElementRef, ViewChild, effect, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Tree } from '../../core/services/tree.service';
 
-// --- ¡NO HAY IMPORTS PARA D3 O N3 AQUÍ! ---
-// TypeScript ahora sabe que existen gracias al archivo `typings.d.ts`
+// Solo importamos D3. ¡Adiós n3-charts!
+import * as d3 from 'd3';
 
-// --- INTERFACES ---
-
-// La estructura de datos que n3.js espera
-interface N3Node {
+// La estructura de datos que D3 espera (es la misma que usábamos antes)
+interface D3Node {
   name: string | number;
-  children?: N3Node[];
-}
-
-// Nuestra definición de tipo aumentada para el nodo de D3 con estilos
-interface N3HierarchyNode extends d3.HierarchyNode<N3Node> {
-  style?: { [key: string]: any };
+  children?: D3Node[];
 }
 
 @Component({
@@ -29,19 +22,19 @@ export class VisualizationComponent {
   public tree = input.required<Tree>();
   @ViewChild('treeContainer') container!: ElementRef<HTMLDivElement>;
 
+  // Creamos el SVG una sola vez para mejorar el rendimiento
+  private svg: d3.Selection<SVGSVGElement, unknown, null, undefined> | undefined;
+  private g: d3.Selection<SVGGElement, unknown, null, undefined> | undefined;
+
   constructor() {
-    // El effect se dispara cada vez que el árbol cambia
     effect(() => {
       const treeData = this.tree();
-      
       if (this.container && treeData?.structure) {
-        // 1. Transformar datos
-        const n3FormattedData = this.transformDataForN3(treeData.structure);
-        
-        // 2. Renderizar si hay datos
-        if (n3FormattedData) {
-          this.renderTree(n3FormattedData, treeData.structure.highlight_key);
+        const d3FormattedData = this.transformDataForD3(treeData.structure);
+        if (d3FormattedData) {
+          this.renderTree(d3FormattedData, treeData.structure.highlight_key);
         } else {
+          this.clearTree();
           this.container.nativeElement.innerHTML = '<p class="empty-tree-msg">El árbol está vacío. ¡Inserta un nodo!</p>';
         }
       }
@@ -49,59 +42,90 @@ export class VisualizationComponent {
   }
 
   /**
-   * Transforma el JSON de nuestro backend a la estructura que n3.js necesita.
+   * Transforma el JSON de nuestro backend a la estructura que D3 necesita.
    */
-  private transformDataForN3(backendNode: any): N3Node | null {
+  private transformDataForD3(backendNode: any): D3Node | null {
     if (!backendNode || backendNode.value === null || backendNode.value === undefined) {
       return null;
     }
-
-    const n3Node: N3Node = {
-      name: backendNode.value,
-      children: []
-    };
-
+    const d3Node: D3Node = { name: backendNode.value, children: [] };
     if (backendNode.left) {
-      const leftChild = this.transformDataForN3(backendNode.left);
-      if (leftChild) n3Node.children?.push(leftChild);
+      const leftChild = this.transformDataForD3(backendNode.left);
+      if (leftChild) d3Node.children?.push(leftChild);
     }
     if (backendNode.right) {
-      const rightChild = this.transformDataForN3(backendNode.right);
-      if (rightChild) n3Node.children?.push(rightChild);
+      const rightChild = this.transformDataForD3(backendNode.right);
+      if (rightChild) d3Node.children?.push(rightChild);
     }
-
-    if (n3Node.children?.length === 0) {
-      delete n3Node.children;
+    if (d3Node.children?.length === 0) {
+      delete d3Node.children;
     }
+    return d3Node;
+  }
 
-    return n3Node;
+  private clearTree(): void {
+    if (this.svg) {
+      this.svg.remove();
+      this.svg = undefined;
+    }
   }
 
   /**
-   * Renderiza el árbol en el contenedor usando las variables globales n3 y d3.
+   * Renderiza el árbol en el contenedor usando D3.js.
    */
-  private renderTree(data: N3Node, highlightKey?: number | null): void {
-    if (!this.container) return;
-    this.container.nativeElement.innerHTML = '';
+  private renderTree(data: D3Node, highlightKey?: number | null): void {
+    this.clearTree(); // Limpiamos cualquier dibujo anterior
+    this.container.nativeElement.innerHTML = ''; // Limpiamos el mensaje de "árbol vacío"
 
-    // El código aquí es el mismo, pero ahora 'n3' y 'd3' se refieren a las
-    // variables globales inyectadas por angular.json, no a módulos importados.
-    const tree = new n3.Tree(data, {
-      target: this.container.nativeElement,
-      width: this.container.nativeElement.offsetWidth,
-      height: 600,
-      margin: { top: 40, right: 40, bottom: 40, left: 40 },
-      nodeStyler: (node: N3HierarchyNode) => {
-        if (!node.style) {
-          node.style = {};
-        }
-        if (node.data.name === highlightKey) {
-          node.style['fill'] = '#ffc107';
-          node.style['stroke'] = '#e6a100';
-        }
-      },
-    });
+    const width = this.container.nativeElement.offsetWidth;
+    const height = 600;
+    const margin = { top: 50, right: 50, bottom: 50, left: 50 };
 
-    tree.render();
+    // 1. Creamos el generador de layout de árbol
+    const treeLayout = d3.tree<D3Node>().size([width - margin.left - margin.right, height - margin.top - margin.bottom]);
+    
+    // 2. Procesamos los datos para darles estructura jerárquica
+    const root = d3.hierarchy(data);
+    
+    // 3. Calculamos las posiciones de los nodos
+    treeLayout(root);
+
+    // 4. Creamos el SVG y el grupo principal
+    this.svg = d3.select(this.container.nativeElement)
+      .append('svg')
+      .attr('width', width)
+      .attr('height', height);
+
+    this.g = this.svg.append('g')
+      .attr('transform', `translate(${margin.left},${margin.top})`);
+
+    // 5. Dibujamos los enlaces (líneas)
+    this.g.selectAll('.link')
+      .data(root.links())
+      .enter()
+      .append('path')
+      .attr('class', 'link')
+      .attr('d', d3.linkVertical<any, d3.HierarchyPointNode<D3Node>>()
+        .x(d => d.x!)
+        .y(d => d.y!)
+      );
+
+    // 6. Dibujamos los nodos (círculos y texto)
+    const node = this.g.selectAll('.node')
+      .data(root.descendants())
+      .enter()
+      .append('g')
+      .attr('class', 'node')
+      .attr('transform', d => `translate(${d.x},${d.y})`);
+
+    // Círculo del nodo
+    node.append('circle')
+      .attr('r', 20)
+      .style('fill', d => d.data.name === highlightKey ? '#ffc107' : '#007bff'); // Resaltado
+
+    // Texto del nodo
+    node.append('text')
+      .attr('dy', '0.31em')
+      .text(d => d.data.name);
   }
 }

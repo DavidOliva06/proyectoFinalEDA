@@ -27,7 +27,6 @@
     "@angular/platform-browser": "^20.0.0",
     "@angular/router": "^20.0.0",
     "d3": "^7.9.0",
-    "n3-charts": "^2.0.28",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },

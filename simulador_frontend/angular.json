@@ -36,8 +36,6 @@
             },
             
             "scripts": [
-              "node_modules/d3/dist/d3.min.js",
-              "node_modules/n3-charts/build/n3-charts.min.js"
             ]
 
           },

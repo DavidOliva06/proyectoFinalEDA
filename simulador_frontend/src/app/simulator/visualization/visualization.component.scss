@@ -1,4 +1,5 @@
 @use 'variables' as *;
+
 .tree-canvas {
   width: 100%;
   height: 100%;
@@ -6,32 +7,37 @@
   background-color: #f8f9fa;
   border: 1px solid #dee2e6;
   border-radius: $base-border-radius;
-  overflow: hidden; // Evita que el SVG se desborde si es muy grande
+  overflow: hidden;
 
-  // Estilos para los elementos que n3.js crea (nodos y enlaces)
+  // Estilos para los elementos que D3 crea
   // Usamos ::ng-deep para que los estilos apliquen dentro del SVG generado.
   ::ng-deep {
-    .node circle {
-      fill: $primary-color;
-      stroke: $primary-hover;
+    .link {
+      fill: none;
+      stroke: #999;
+      stroke-opacity: 0.6;
       stroke-width: 2px;
+    }
+    
+    .node circle {
+      stroke: white;
+      stroke-width: 2px;
+      transition: fill 0.2s ease-in-out;
     }
     
     .node text {
       font-size: 14px;
       font-weight: 600;
       fill: white;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-    }
-    
-    .link {
-      fill: none;
-      stroke: #ccc;
-      stroke-width: 2px;
+      text-anchor: middle; // Centra el texto en el círculo
+      paint-order: stroke;
+      stroke: #333;
+      stroke-width: 0.5px;
+      stroke-linecap: butt;
+      stroke-linejoin: miter;
     }
   }
 
-  // Estilos para el mensaje de árbol vacío
   .empty-tree-msg {
     display: flex;
     justify-content: center;
@@ -39,5 +45,7 @@
     height: 100%;
     color: $text-light;
     font-style: italic;
+    padding: 2rem;
+    text-align: center;
   }
 }
