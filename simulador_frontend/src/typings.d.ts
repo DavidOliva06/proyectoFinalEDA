@@ -1,1 +1,2 @@
-declare module 'n3-charts';
+declare var n3: any;
+declare var d3: any;
