@@ -10,4 +10,17 @@
 
   # Publish directory: La carpeta que Netlify debe publicar,
   # relativa a la carpeta 'base'.
-  publish = "dist/simulador_frontend"
+  # Apuntamos a la carpeta 'browser' que genera el nuevo builder.
+  publish = "dist/simulador_frontend/browser"
+
+
+# --- Reglas de Redirección para SPA ---
+# Esta sección soluciona el problema del "Page not found".
+
+[[redirects]]
+  # Para cualquier ruta que no sea un archivo existente...
+  from = "/*"
+  # ...sirve el index.html principal.
+  to = "/index.html"
+  # Y devuelve un código de estado 200 (OK).
+  status = 200
