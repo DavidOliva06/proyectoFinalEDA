@@ -28,7 +28,16 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1,localhost').split(',')
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+VERCEL_URL = os.environ.get('VERCEL_URL')
+if VERCEL_URL:
+    # Vercel puede incluir 'https://' al principio, Django solo quiere el dominio.
+    # Aunque la variable VERCEL_URL usualmente es solo el dominio,
+    # es más seguro dividirla por si acaso.
+    ALLOWED_HOSTS.append(VERCEL_URL.split('//')[-1])
+
+# También puedes añadir un comodín para todos los subdominios de vercel.app
+ALLOWED_HOSTS.append('.vercel.app')
 
 
 # Application definition
