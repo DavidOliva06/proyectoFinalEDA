@@ -2,7 +2,7 @@ import { Injectable, signal, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { environment } from '../../../enviroments/environment';
+import { environment } from '../../../environments/environment';
 
 // Interfaz para la respuesta del token de Simple JWT
 export interface TokenResponse {
